@@ -1,0 +1,31 @@
+[deployment]
+mode = "shadow"
+timezone = "America/New_York"
+run_hour = 16
+run_minute = 0
+
+[rules]
+pass_statuses = ["Field Received"]
+package_match = "exact_normalized_name_and_project"
+require_all_expected_containers = true
+report_when_no_deliveries = true
+
+[classification]
+exclusion_keywords = [
+  "meeting",
+  "tool delivery",
+  "material return",
+  "return to shop",
+  "pickup",
+  "transfer",
+]
+
+[dashboards]
+warehouse_history_url = ""
+shipping_tracking_url = ""
+
+[paths]
+database = "var/state/delivery_qc.db"
+reports = "var/reports"
+drafts = "var/drafts"
+logs = "var/logs"

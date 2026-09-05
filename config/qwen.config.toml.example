@@ -1,0 +1,6 @@
+model = "qwen3.8:latest"
+model_provider = "ollama"
+oss_provider = "ollama"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "disabled"

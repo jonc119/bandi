@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Delivery QC Tests//EN
+BEGIN:VEVENT
+UID:delivery-1
+DTSTART;TZID=America/New_York:20260818T090000
+SUMMARY:Stratus delivery - CHW Riser
+DESCRIPTION:Project: Central Hospital\nPackage: CHW-Riser-01\nContainers Completed: 3 carts\nContainer Names: Cart-1, Cart-2, Cart-3
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting-1
+DTSTART:20260818T130000Z
+SUMMARY:Coordination meeting
+DESCRIPTION:Weekly planning meeting
+END:VEVENT
+BEGIN:VEVENT
+UID:review-1
+DTSTART;VALUE=DATE:20260818
+SUMMARY:Vendor activity
+DESCRIPTION:Confirm site activity
+END:VEVENT
+BEGIN:VEVENT
+UID:future-delivery
+DTSTART;VALUE=DATE:20260819
+SUMMARY:Future Stratus package
+DESCRIPTION:Project: Central Hospital\nPackage: HW-Second-Floor\nContainers: 1 pallet
+END:VEVENT
+END:VCALENDAR

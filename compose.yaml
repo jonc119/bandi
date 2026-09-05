@@ -1,0 +1,82 @@
+services:
+  delivery-qc:
+    mem_limit: 512m
+    pids_limit: 64
+    build: .
+    image: hermes-delivery-qc-checker:shadow
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    network_mode: none
+    volumes:
+      - ./var/inbox:/data/var/inbox:ro
+      - ./var/state:/data/var/state:rw
+      - ./var/reports:/data/var/reports:rw
+      - ./var/drafts:/data/var/drafts:rw
+      - ./var/logs:/data/var/logs:rw
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid,nodev
+
+  delivery-qc-stratus:
+    mem_limit: 512m
+    pids_limit: 64
+    profiles:
+      - stratus-readonly
+    build: .
+    image: hermes-delivery-qc-checker:shadow
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      STRATUS_APP_KEY_FILE: /run/secrets/stratus_app_key
+    secrets:
+      - stratus_app_key
+    volumes:
+      - ./var/inbox:/data/var/inbox:ro
+      - ./var/state:/data/var/state:rw
+      - ./var/reports:/data/var/reports:rw
+      - ./var/drafts:/data/var/drafts:rw
+      - ./var/logs:/data/var/logs:rw
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid,nodev
+
+  delivery-qc-dashboard:
+    image: hermes-delivery-qc-checker:shadow
+    entrypoint: ["python", "-m", "delivery_qc.infrastructure.dashboard_server"]
+    command: ["--port", "9120", "--bind", "0.0.0.0", "--directory", "/reports"]
+    mem_limit: 256m
+    pids_limit: 64
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    ports:
+      - "127.0.0.1:9120:9120"
+    volumes:
+      - ./var/reports:/reports:ro
+      - ./var/logs:/health:ro
+    tmpfs:
+      - /tmp:size=8m,noexec,nosuid,nodev
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          response=urllib.request.urlopen('http://127.0.0.1:9120/',timeout=5);
+          assert response.status == 200
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+secrets:
+  stratus_app_key:
+    file: ./var/secrets/stratus_app_key

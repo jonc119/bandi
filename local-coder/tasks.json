@@ -1,0 +1,20 @@
+[
+  {
+    "id": "inventory-guard-tests",
+    "instruction": "Add synthetic unittest regressions proving _containers_for_package rejects missing nested containers and duplicate or missing container IDs, and preserves mixed direct/part/assembly membership. Do not modify existing tests or implementation. Do not call Stratus or other networks. Import from the existing delivery_qc adapter. Use unique test names and ordinary unittest assertions.",
+    "allowed_files": ["tests/test_local_inventory_guards.py"],
+    "context_files": ["src/delivery_qc/adapters/stratus_api.py", "tests/test_stratus_api.py"]
+  },
+  {
+    "id": "calendar-guard-tests",
+    "instruction": "Add synthetic unittest regressions for malformed calendars, nested or incomplete VEVENT, cancelled events, recurring delivery rejection, and unknown events classified REVIEW. Use temporary files, no network. Do not alter existing files or weaken requirements.",
+    "allowed_files": ["tests/test_local_calendar_guards.py"],
+    "context_files": ["src/delivery_qc/adapters/ics_schedule.py", "tests/test_ics_schedule.py", "src/delivery_qc/domain/models.py"]
+  },
+  {
+    "id": "export-guard-tests",
+    "instruction": "Add synthetic tests for SafeCsvWriter and csv_text using dangerous formula prefixes including leading whitespace and control characters, benign strings, integer counts and None. Verify original strings are not mutated, output cells are escaped correctly, and numeric values remain numeric before serialization. No Excel launch, network or host commands. Only create the allowed test file.",
+    "allowed_files": ["tests/test_local_export_guards.py"],
+    "context_files": ["src/delivery_qc/infrastructure/export_safety.py"]
+  }
+]

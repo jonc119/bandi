@@ -89,5 +89,7 @@ Last observed result: 45 project tests passed and 6 controller tests passed on 2
 
 ## Last Known Good Commit
 
-No commit existed when this handoff was created. Create and record the initial reviewed checkpoint
-after confirming ignored runtime and credential paths are not staged.
+`6b6181f` — `checkpoint before local Qwen handoff`
+
+This checkpoint was created only after confirming that runtime data, browser state, generated
+reports, `config/qc.toml`, and `var/secrets/` were not staged.

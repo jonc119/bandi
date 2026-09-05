@@ -23,6 +23,8 @@ after the evidence source, scheduled execution, dashboard, and notification path
 - Six local-coder controller security tests pass.
 - Codex CLI 0.147.0 was smoke-tested against Ollama and explicitly reported
   `model: qwen3.8:latest`, `provider: ollama`, then returned the expected response.
+- Always launch Qwen with explicit `--oss --local-provider ollama` flags. Do not rely on
+  `codex -p qwen` alone, because an unresolved profile can inherit the OpenAI provider.
 - The latest local Qwen smoke run correctly stopped with `TESTS_FAILED`; its proposed tests were not
   merged and production files were not changed.
 - The project remains in shadow mode. No statement in this file authorizes go-live.

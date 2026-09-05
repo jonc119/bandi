@@ -114,7 +114,12 @@ local Qwen. Install the optional profile once with:
 .\scripts\install-qwen-codex-profile.ps1
 ```
 
-Then double-click `Start Qwen Codex.cmd`, or run `codex -p qwen` from this project directory.
+Then double-click `Start Qwen Codex.cmd`. For a terminal launch, use the same explicit provider guard:
+
+```powershell
+codex -p qwen --oss --local-provider ollama -m qwen3.8:latest
+```
+
 The launcher verifies Ollama is reachable and begins with a read-only reconstruction of the current
 Git state before asking Qwen to continue. It also supplies `--oss --local-provider ollama` explicitly,
 so the run cannot silently inherit the OpenAI provider. The existing `Start Local Coding.cmd` remains available

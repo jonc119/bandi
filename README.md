@@ -124,3 +124,6 @@ The launcher verifies Ollama is reachable and begins with a read-only reconstruc
 Git state before asking Qwen to continue. It also supplies `--oss --local-provider ollama` explicitly,
 so the run cannot silently inherit the OpenAI provider. The existing `Start Local Coding.cmd` remains available
 for narrowly allowlisted work in an isolated copy when direct worktree access is not appropriate.
+
+For phone-driven Open WebUI coding, see `docs/qwen-openwebui-workflow.md`. That path uses a separate
+`qwen/agent` Git branch and isolated terminal workspace; it never grants Qwen the live QC runtime.

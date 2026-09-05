@@ -10,6 +10,7 @@ delivery, and presents a mobile-friendly investigation dashboard.
 
 Finish the remaining release gates, validate the hardened runtime, and move from shadow mode only
 after the evidence source, scheduled execution, dashboard, and notification path are all proven.
+Separately, configure the isolated Qwen Open WebUI coding lane before returning to the release gates.
 
 ## Current State
 
@@ -25,6 +26,8 @@ after the evidence source, scheduled execution, dashboard, and notification path
   `model: qwen3.8:latest`, `provider: ollama`, then returned the expected response.
 - Always launch Qwen with explicit `--oss --local-provider ollama` flags. Do not rely on
   `codex -p qwen` alone, because an unresolved profile can inherit the OpenAI provider.
+- Qwen Open WebUI setup uses an isolated clone and `qwen/agent` branch. It must not receive the live
+  Delivery QC workspace or its runtime material.
 - The latest local Qwen smoke run correctly stopped with `TESTS_FAILED`; its proposed tests were not
   merged and production files were not changed.
 - The project remains in shadow mode. No statement in this file authorizes go-live.
@@ -88,6 +91,8 @@ Last observed result: 45 project tests passed and 6 controller tests passed on 2
    attachment-based intake.
 4. Deploy and verify the hardened dashboard while preserving the existing instance for rollback.
 5. Implement and test the approved notification path, then complete the go-live checklist.
+6. Start and connect the isolated Open Terminal coding workspace; retain the existing Open WebUI
+   container for rollback while adding a stable `WEBUI_SECRET_KEY` to its replacement.
 
 ## Last Known Good Commit
 

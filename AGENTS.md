@@ -41,3 +41,12 @@ Before ending substantial work:
 3. Update `HANDOFF.md` with completed work, uncertainty, blockers, and next actions.
 4. Do not claim deployment or go-live unless the current environment was directly verified.
 5. Leave a small, reviewable checkpoint; do not begin another major task after handoff.
+
+## Local Qwen Coding Lane
+
+- Qwen works only in the dedicated `qwen/agent` branch inside its isolated terminal workspace.
+- Qwen may read, edit, test, and commit code in that branch. It must never merge, rebase, force-push,
+  or change `main`.
+- Qwen must run relevant tests before every commit and update `HANDOFF.md` before stopping.
+- The host-side sync task may push only `qwen/agent` to the fixed `https://github.com/jonc119/bandi.git`
+  remote. A human or Astra reviews and merges that branch later.

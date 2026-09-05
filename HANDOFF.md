@@ -28,6 +28,10 @@ Separately, configure the isolated Qwen Open WebUI coding lane before returning 
   `codex -p qwen` alone, because an unresolved profile can inherit the OpenAI provider.
 - Qwen Open WebUI setup uses an isolated clone and `qwen/agent` branch. It must not receive the live
   Delivery QC workspace or its runtime material.
+- The dedicated clone exists at `C:\Users\jonc1\AI\bandi-qwen`; its clean `qwen/agent` branch is
+  published to GitHub. The five-minute `Bandi Qwen Branch Sync` host task was manually verified with
+  result code 0. The private `bandi-qwen-terminal` container is healthy, has no host port or internet
+  route, and mounts only that clone.
 - The latest local Qwen smoke run correctly stopped with `TESTS_FAILED`; its proposed tests were not
   merged and production files were not changed.
 - The project remains in shadow mode. No statement in this file authorizes go-live.
@@ -92,7 +96,9 @@ Last observed result: 45 project tests passed and 6 controller tests passed on 2
 4. Deploy and verify the hardened dashboard while preserving the existing instance for rollback.
 5. Implement and test the approved notification path, then complete the go-live checklist.
 6. Start and connect the isolated Open Terminal coding workspace; retain the existing Open WebUI
-   container for rollback while adding a stable `WEBUI_SECRET_KEY` to its replacement.
+   container for rollback while adding a stable `WEBUI_SECRET_KEY` to its replacement. Then save the
+   admin terminal connection at `http://bandi-qwen-terminal:8000` and verify native tool calling for
+   `qwen3.8:latest`.
 
 ## Last Known Good Commit
 

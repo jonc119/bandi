@@ -14,11 +14,9 @@ if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
     throw "Scheduled task already exists: $taskName"
 }
 
-$arguments = "-NoProfile -File `"$scriptPath`" -WorkspacePath `"$WorkspacePath`""
+$arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`" -WorkspacePath `"$WorkspacePath`""
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $arguments
-$trigger = New-ScheduledTaskTrigger -Daily -At "12:00AM"
-$trigger.Repetition.Interval = "PT5M"
-$trigger.Repetition.Duration = "P1D"
+$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration (New-TimeSpan -Days 3650)
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Limited
 
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Description "Pushes committed Bandi Qwen agent-branch work to GitHub every five minutes." | Out-Null

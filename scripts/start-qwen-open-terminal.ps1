@@ -12,7 +12,8 @@ $networkName = "bandi-qwen-terminal-net"
 if (-not (Test-Path -LiteralPath $WorkspacePath)) {
     throw "Qwen workspace is missing: $WorkspacePath"
 }
-if (docker container inspect $containerName 2>$null) {
+docker container inspect $containerName 1>$null 2>$null
+if ($LASTEXITCODE -eq 0) {
     throw "Terminal container already exists: $containerName"
 }
 
@@ -24,7 +25,8 @@ if (-not (Test-Path -LiteralPath $secretPath)) {
 }
 
 $apiKey = Get-Content -LiteralPath $secretPath -Raw
-if (-not (docker network inspect $networkName 2>$null)) {
+docker network inspect $networkName 1>$null 2>$null
+if ($LASTEXITCODE -ne 0) {
     docker network create --internal --attachable $networkName | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Qwen terminal network creation failed." }
 }
@@ -38,7 +40,14 @@ if ($openWebUiNetworks -notcontains $networkName) {
 docker pull ghcr.io/open-webui/open-terminal
 if ($LASTEXITCODE -ne 0) { throw "Open Terminal image pull failed." }
 
-docker run -d --name $containerName --restart unless-stopped --network $networkName --network-alias $containerName --memory 4g --cpus 6 --pids-limit 256 --cap-drop ALL --security-opt no-new-privileges:true --volume "${WorkspacePath}:/home/user" --env "OPEN_TERMINAL_API_KEY=$apiKey" ghcr.io/open-webui/open-terminal
+docker run -d --name $containerName --restart unless-stopped --network $networkName --network-alias $containerName --memory 4g --cpus 6 --pids-limit 256 --security-opt no-new-privileges:true --volume "${WorkspacePath}:/home/user" --env "OPEN_TERMINAL_API_KEY=$apiKey" ghcr.io/open-webui/open-terminal
 if ($LASTEXITCODE -ne 0) { throw "Open Terminal container failed to start." }
+
+docker exec $containerName git config --global --add safe.directory /home/user
+if ($LASTEXITCODE -ne 0) { throw "Qwen terminal Git workspace initialization failed." }
+docker exec $containerName git -C /home/user config core.autocrlf true
+if ($LASTEXITCODE -ne 0) { throw "Qwen terminal line-ending initialization failed." }
+docker exec $containerName sh -lc "printf '%s\n' '.bashrc' '.profile' '.gitconfig' >> /home/user/.git/info/exclude"
+if ($LASTEXITCODE -ne 0) { throw "Qwen terminal Git exclude initialization failed." }
 
 Write-Output "Open Terminal started for the isolated Qwen workspace."

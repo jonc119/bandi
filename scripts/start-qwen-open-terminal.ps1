@@ -47,7 +47,7 @@ docker exec $containerName git config --global --add safe.directory /home/user
 if ($LASTEXITCODE -ne 0) { throw "Qwen terminal Git workspace initialization failed." }
 docker exec $containerName git -C /home/user config core.autocrlf true
 if ($LASTEXITCODE -ne 0) { throw "Qwen terminal line-ending initialization failed." }
-docker exec $containerName sh -lc "printf '%s\n' '.bashrc' '.profile' '.gitconfig' >> /home/user/.git/info/exclude"
+docker exec $containerName sh -lc "printf '%s\n' '.bashrc' '.profile' '.gitconfig' '.local/' >> /home/user/.git/info/exclude"
 if ($LASTEXITCODE -ne 0) { throw "Qwen terminal Git exclude initialization failed." }
 
 Write-Output "Open Terminal started for the isolated Qwen workspace."

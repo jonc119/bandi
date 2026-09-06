@@ -50,3 +50,16 @@ Before ending substantial work:
 - Qwen must run relevant tests before every commit and update `HANDOFF.md` before stopping.
 - The host-side sync task may push only `qwen/agent` to the fixed `https://github.com/jonc119/bandi.git`
   remote. A human or Astra reviews and merges that branch later.
+
+## Model Delegation and Review
+
+- Use lower-cost models for bounded documentation, routine edits, and focused reviews when delegation
+  saves total usage. Keep architecture, security decisions, and ambiguous failures with Astra.
+- Qwen can continue local coding while hosted model usage is unavailable. It must leave changes on
+  `qwen/agent` and record the task, changed files, test results, and unresolved questions in `HANDOFF.md`.
+- Before any Qwen changes merge, Astra selects an OpenAI reviewer appropriate to the change: Luna for
+  small documentation-only changes, Terra for ordinary code, and Astra for security or QC business rules.
+- Review must cover the exact candidate commit and required tests. Record reviewer, commit SHA,
+  findings, and resolution. Any further change invalidates that review until checked again.
+- No automatic merge is authorized. If an OpenAI reviewer is unavailable, leave the work pending on
+  `qwen/agent`; a local model's self-review does not satisfy this gate.
